@@ -1,14 +1,13 @@
-import type { ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway';
-import { formatJSONResponse } from '@libs/apiGateway';
-import { middyfy } from '@libs/lambda';
+import { ApiGatewayHandler } from '@/types/api-gateway';
+import { bodyParser } from '@/middlewares/body-parser.middleware';
+import { schema } from './schema';
 
-import schema from './schema';
+const hello: ApiGatewayHandler<typeof schema> = async (event) => {
+  return {
+    statusCode: 200,
+    message: `Hello ${event.body?.name}, welcome to the exciting Serverless world!`,
+    body: JSON.stringify(event),
+  };
+};
 
-const hello: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
-  return formatJSONResponse({
-    message: `Hello ${event.body.name}, welcome to the exciting Serverless world!`,
-    event,
-  });
-}
-
-export const main = middyfy(hello);
+export const main = bodyParser(hello);
