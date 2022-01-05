@@ -6,12 +6,12 @@ import { initDb } from './init';
 import {
   PutItem,
   PutItemOutput,
-  QueryItem,
-  QueryItemOutput,
+  ScanItem,
+  ScanOutput,
   GetItem,
   GetItemOutput,
   UpdateItem,
-  UpdateItemOutPut,
+  UpdateItemOutput,
   DeleteItem,
   DeleteItemOutput,
 } from './types';
@@ -30,9 +30,9 @@ export class DynamoDBRepository {
     }
   };
 
-  find = async (params: QueryItem): Promise<QueryItemOutput> => {
+  find = async (params: ScanItem): Promise<ScanOutput> => {
     try {
-      return documentClient.query(params).promise();
+      return documentClient.scan(params).promise();
     } catch (error) {
       throw new Response(StatusCode.ERROR, {}, `find-error: ${error}`);
     }
@@ -46,7 +46,7 @@ export class DynamoDBRepository {
     }
   };
 
-  update = async (params: UpdateItem): Promise<UpdateItemOutPut> => {
+  update = async (params: UpdateItem): Promise<UpdateItemOutput> => {
     try {
       return documentClient.update(params).promise();
     } catch (error) {

@@ -3,7 +3,7 @@ import { ValidationError } from 'yup';
 import { LeadModel } from '@/models/leads/lead.model';
 import { leadSchema } from '@/models/leads/lead.schema';
 import { DynamoDBRepository } from '@/services/dynamodb/dynamodb-repository';
-import { StatusCode } from '@/common/response/types';
+import { ResponseMessage, StatusCode } from '@/common/response/types';
 import { Response } from '@/common/response/response.class';
 import { ApiGatewayHandler } from '@/types/api-gateway';
 import { bodyParser } from '@/middlewares/body-parser.middleware';
@@ -27,9 +27,9 @@ const createLead: ApiGatewayHandler<typeof leadSchema> = async (event) => {
     await repository.create(params);
 
     response = new Response(
-      200,
+      StatusCode.CREATED,
       { leadId: leadModel.id },
-      `Lead has been created` // TODO
+      ResponseMessage.CREATE_LEAD_SUCCESS
     );
 
     return response.generate();
@@ -37,7 +37,11 @@ const createLead: ApiGatewayHandler<typeof leadSchema> = async (event) => {
     if (err instanceof ValidationError) {
       response = new Response(StatusCode.BAD_REQUEST, {}, err.message);
     } else {
-      response = new Response(StatusCode.BAD_REQUEST, {}, err);
+      response = new Response(
+        StatusCode.BAD_REQUEST,
+        {},
+        ResponseMessage.CREATE_LEAD_FAIL
+      );
     }
   }
   return response.generate();
