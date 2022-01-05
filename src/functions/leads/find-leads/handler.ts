@@ -5,6 +5,7 @@ import { ResponseMessage, StatusCode } from '@/common/response/types';
 import { Response } from '@/common/response/response.class';
 import { ApiGatewayHandler } from '@/types/api-gateway';
 import { bodyParser } from '@/middlewares/body-parser.middleware';
+import { ScanItem } from '@/services/dynamodb/types';
 
 const findLeads: ApiGatewayHandler<typeof leadSchema> = async (event) => {
   let response: Response;
@@ -13,7 +14,8 @@ const findLeads: ApiGatewayHandler<typeof leadSchema> = async (event) => {
 
   try {
     const repository = new DynamoDBRepository();
-    const params = {
+    // TODO add sorting by created_at desc
+    const params: ScanItem = {
       TableName: LeadModel.tableName,
     };
 
@@ -29,6 +31,7 @@ const findLeads: ApiGatewayHandler<typeof leadSchema> = async (event) => {
 
     return response.generate();
   } catch (err) {
+    console.log(err);
     response = new Response(
       StatusCode.BAD_REQUEST,
       {},

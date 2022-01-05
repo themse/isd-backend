@@ -34,6 +34,7 @@ const createLead: ApiGatewayHandler<typeof leadSchema> = async (event) => {
 
     return response.generate();
   } catch (err) {
+    console.log(err);
     if (err instanceof ValidationError) {
       response = new Response(StatusCode.BAD_REQUEST, {}, err.message);
     } else {
