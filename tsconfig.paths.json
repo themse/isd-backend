@@ -2,11 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@/common/*": ["src/common/*"],
       "@/functions/*": ["src/functions/*"],
       "@/middlewares/*": ["src/middlewares/*"],
+      "@/services/*": ["src/services/*"],
       "@/types/*": ["src/common/types/*"],
       "@/utils/*": ["src/utils/*"],
-      "@libs/*": ["src/libs/*"]
+      "@/models/*": ["src/models/*"]
     }
   }
 }

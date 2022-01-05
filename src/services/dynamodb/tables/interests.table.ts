@@ -1,4 +1,5 @@
 import { AttributeType, ProjectionType } from '@aws-cdk/aws-dynamodb';
+
 import { DynamoDBTableInterface, KeyType } from '../dynamodb-table.interface';
 
 export const interestsTable: DynamoDBTableInterface = {

@@ -2,12 +2,12 @@ import { pathResolver } from '@/utils/path-resolver';
 
 export default {
   handler: `${pathResolver(__dirname)}/handler.main`,
-  description: 'Example handler',
+  description: 'Create Lead',
   events: [
     {
       http: {
-        method: 'get',
-        path: 'hello',
+        method: 'post',
+        path: 'lead',
         cors: true,
       },
     },
