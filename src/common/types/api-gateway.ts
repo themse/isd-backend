@@ -1,12 +1,12 @@
 import type {
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
+  APIGatewayProxyEventV2,
+  APIGatewayProxyResultV2,
   Handler,
 } from 'aws-lambda';
 import { InferType, AnySchema } from 'yup';
 
 type APIGatewayEvent<T extends AnySchema> = Omit<
-  APIGatewayProxyEvent,
+  APIGatewayProxyEventV2,
   'body'
 > & {
   body: InferType<T>;
@@ -14,5 +14,5 @@ type APIGatewayEvent<T extends AnySchema> = Omit<
 
 export type ApiGatewayHandler<T extends AnySchema> = Handler<
   APIGatewayEvent<T>,
-  APIGatewayProxyResult
+  APIGatewayProxyResultV2
 >;
