@@ -1,8 +1,12 @@
 import type { AWS } from '@serverless/typescript';
-import { dynamoDbConfig } from 'src/services/dynamodb/config';
-import { userTable } from 'src/services/dynamodb/tables';
+import {
+  dynamoDBConfig,
+  tableNames,
+  tableThroughput,
+} from 'src/services/dynamodb/config';
+import { leadsTable, interestsTable } from 'src/services/dynamodb/tables';
 
-import { hello } from '@/functions/index';
+import * as functions from '@/functions/index';
 
 const serverlessConfiguration: AWS = {
   service: 'isd-backend',
@@ -34,11 +38,18 @@ const serverlessConfiguration: AWS = {
       },
     ],
   },
-  // import the function via paths
-  functions: { hello },
+
+  functions,
+
   package: { individually: true },
   custom: {
-    dynamodb: dynamoDbConfig,
+    // variables
+    stage: '${opt:stage, self:provider.stage}',
+    ...tableThroughput,
+    ...tableNames,
+
+    dynamodb: dynamoDBConfig,
+
     esbuild: {
       bundle: true,
       minify: false,
@@ -55,7 +66,8 @@ const serverlessConfiguration: AWS = {
   },
   resources: {
     Resources: {
-      userTable,
+      LeadsTable: leadsTable,
+      InterestsTable: interestsTable,
     },
   },
 };

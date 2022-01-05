@@ -1,1 +1,2 @@
-export { userTable } from './user.table';
+export { leadsTable } from './leads.table';
+export { interestsTable } from './interests.table';
