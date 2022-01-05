@@ -5,7 +5,7 @@ import { leadSchema } from './lead.schema';
 import { LeadTableInterface, UpsertLeadDto } from './types';
 
 export class LeadModel {
-  static tableName = 'isd-backend-leads-table-dev'; // TODO get from env
+  static tableName = process.env.LEADS_TABLE;
 
   static validate({
     id,

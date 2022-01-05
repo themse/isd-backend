@@ -5,7 +5,7 @@ import { interestSchema } from './interest.schema';
 import { UpsertInterestDto, InterestTableInterface } from './types';
 
 export class InterestModel {
-  static tableName = 'isd-backend-interests-table-dev'; // TODO get from env
+  static tableName = process.env.INTERESTS_TABLE;
 
   static validate({
     id,

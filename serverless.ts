@@ -28,6 +28,14 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+
+      LEADS_TABLE: '${self:custom.leads_table}',
+      INTERESTS_TABLE: '${self:custom.interests_table}',
+
+      STAGE: '${self:custom.stage}',
+      DYNAMODB_LOCAL_STAGE: '${self:custom.dynamodbLocalStage}',
+      DYNAMODB_LOCAL_ENDPOINT: '${self:custom.dynamodbLocalEndpoint}',
+      DYNAMODB_LOCAL_REGION: '${self:custom.dynamodbLocalRegion}',
     },
     lambdaHashingVersion: '20201221',
     iamRoleStatements: [
@@ -47,6 +55,9 @@ const serverlessConfiguration: AWS = {
     stage: '${opt:stage, self:provider.stage}',
     ...tableThroughput,
     ...tableNames,
+    dynamodbLocalStage: 'dev',
+    dynamodbLocalEndpoint: 'http://localhost:8008',
+    dynamodbLocalRegion: 'localhost',
 
     dynamodb: dynamoDBConfig,
 
