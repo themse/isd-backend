@@ -8,7 +8,10 @@ export type UpdateItem = AWS.DynamoDB.DocumentClient.UpdateItemInput;
 export type UpdateItemOutput = AWS.DynamoDB.DocumentClient.UpdateItemOutput;
 
 export type ScanItem = AWS.DynamoDB.DocumentClient.ScanInput;
-export type ScanOutput = AWS.DynamoDB.DocumentClient.ScanOutput;
+export type ScanItemOutput = AWS.DynamoDB.DocumentClient.ScanOutput;
+
+export type QueryItem = AWS.DynamoDB.DocumentClient.QueryInput;
+export type QueryItemOutput = AWS.DynamoDB.DocumentClient.QueryOutput;
 
 export type GetItem = AWS.DynamoDB.DocumentClient.GetItemInput;
 export type GetItemOutput = AWS.DynamoDB.DocumentClient.GetItemOutput;

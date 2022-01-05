@@ -1,3 +1,4 @@
+import { InterestModel } from '@/models/interests/interest.model';
 import { LeadModel } from '@/models/leads/lead.model';
 import { leadSchema } from '@/models/leads/lead.schema';
 import { DynamoDBRepository } from '@/services/dynamodb/dynamodb-repository';
@@ -5,7 +6,7 @@ import { ResponseMessage, StatusCode } from '@/common/response/types';
 import { Response } from '@/common/response/response.class';
 import { ApiGatewayHandler } from '@/types/api-gateway';
 import { bodyParser } from '@/middlewares/body-parser.middleware';
-import { ScanItem } from '@/services/dynamodb/types';
+import { QueryItem, ScanItem } from '@/services/dynamodb/types';
 
 const findLeads: ApiGatewayHandler<typeof leadSchema> = async (event) => {
   let response: Response;
@@ -14,19 +15,44 @@ const findLeads: ApiGatewayHandler<typeof leadSchema> = async (event) => {
 
   try {
     const repository = new DynamoDBRepository();
-    // TODO add sorting by created_at desc
-    const params: ScanItem = {
+    const leadParams: ScanItem = {
       TableName: LeadModel.tableName,
     };
 
-    const result = await repository.find(params);
+    const leadsData = await repository.find(leadParams);
+
+    if (leadsData.Count === 0) {
+      response = new Response(
+        StatusCode.OK,
+        leadsData,
+        ResponseMessage.GET_LEAD_NOT_FOUND
+      );
+    }
+
+    let result = {};
+
+    for (const leadItem of leadsData.Items) {
+      const interestsParam: QueryItem = {
+        TableName: InterestModel.tableName,
+        IndexName: 'lead_index',
+        KeyConditionExpression: 'lead_id = :v_lead_id',
+        ExpressionAttributeValues: {
+          ':v_lead_id': leadItem.id,
+        },
+        Limit: 15,
+      };
+
+      const interestsData = await repository.query(interestsParam);
+      result[leadItem.id] = {
+        ...leadItem,
+        interests: interestsData?.Items,
+      };
+    }
 
     response = new Response(
       StatusCode.OK,
-      result,
-      result.Count > 0
-        ? ResponseMessage.GET_LEAD_LIST_SUCCESS
-        : ResponseMessage.GET_LEAD_NOT_FOUND
+      Object.values(result),
+      ResponseMessage.GET_LEAD_LIST_SUCCESS
     );
 
     return response.generate();

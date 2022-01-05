@@ -7,13 +7,15 @@ import {
   PutItem,
   PutItemOutput,
   ScanItem,
-  ScanOutput,
+  ScanItemOutput,
   GetItem,
   GetItemOutput,
   UpdateItem,
   UpdateItemOutput,
   DeleteItem,
   DeleteItemOutput,
+  QueryItem,
+  QueryItemOutput,
 } from './types';
 
 // aws database configuration
@@ -30,11 +32,19 @@ export class DynamoDBRepository {
     }
   };
 
-  find = async (params: ScanItem): Promise<ScanOutput> => {
+  find = async (params: ScanItem): Promise<ScanItemOutput> => {
     try {
       return documentClient.scan(params).promise();
     } catch (error) {
       throw new Response(StatusCode.ERROR, {}, `find-error: ${error}`);
+    }
+  };
+
+  query = async (params: QueryItem): Promise<QueryItemOutput> => {
+    try {
+      return documentClient.query(params).promise();
+    } catch (error) {
+      throw new Response(StatusCode.ERROR, {}, `query-error: ${error}`);
     }
   };
 
