@@ -40,7 +40,13 @@ export enum ResponseMessage {
 
   GET_LEAD_LIST_SUCCESS = 'A list of leads are successfully retrieved',
   GET_LEAD_LIST_FAIL = "A list of leads can't be retrieved",
-  GET_LEAD_NOT_FOUND = 'Leads not found',
+  GET_LEAD_NOT_FOUND = 'Lead not found',
+
+  CREATE_INTEREST_SUCCESS = 'Lead interest is successfully created',
+  CREATE_INTEREST_FAIL = "Lead interest can't be created",
+
+  GET_INTEREST_LIST_SUCCESS = 'A list of lead interests are successfully retrieved',
+  GET_INTEREST_LIST_FAIL = "A list of lead interests can't be retrieved",
 
   ERROR = 'Unknown error',
   INVALID_REQUEST = 'Invalid Request',

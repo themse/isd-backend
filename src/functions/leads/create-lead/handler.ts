@@ -7,6 +7,7 @@ import { ResponseMessage, StatusCode } from '@/common/response/types';
 import { Response } from '@/common/response/response.class';
 import { ApiGatewayHandler } from '@/types/api-gateway';
 import { bodyParser } from '@/middlewares/body-parser.middleware';
+import { PutItem } from '@/services/dynamodb/types';
 
 const createLead: ApiGatewayHandler<typeof leadSchema> = async (event) => {
   let response: Response;
@@ -17,7 +18,7 @@ const createLead: ApiGatewayHandler<typeof leadSchema> = async (event) => {
     const leadModel = new LeadModel(validatedData);
 
     const data = leadModel.getEntityMappings();
-    const params = {
+    const params: PutItem = {
       TableName: LeadModel.tableName,
       Item: data,
     };

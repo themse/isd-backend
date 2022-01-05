@@ -37,7 +37,20 @@ export class LeadModel {
     this.hydrate(dto);
   }
 
-  hydrate({ email, phone, firstName, lastName, id }: UpsertLeadDto) {
+  getEntityMappings(): LeadTableInterface {
+    return {
+      id: this.id,
+      email: this.email,
+      phone: this.phone,
+      first_name: this.firstName,
+      last_name: this.lastName,
+
+      created_at: this.createdAt,
+      updated_at: this.updatedAt,
+    };
+  }
+
+  protected hydrate({ email, phone, firstName, lastName, id }: UpsertLeadDto) {
     if (this.isUpdate(id)) {
       this.id = id;
       this.updatedAt = new Date().getTime();
@@ -49,18 +62,6 @@ export class LeadModel {
     this.phone = phone;
     this.firstName = firstName;
     this.lastName = lastName;
-  }
-
-  getEntityMappings(): LeadTableInterface {
-    return {
-      id: this.id,
-      email: this.email,
-      phone: this.phone,
-      first_name: this.firstName,
-      last_name: this.lastName,
-      created_at: this.createdAt,
-      updated_at: this.updatedAt,
-    };
   }
 
   protected isUpdate(id: string | undefined): boolean {
