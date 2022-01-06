@@ -6,47 +6,51 @@ import { UpsertInterestDto, InterestTableInterface } from './types';
 import { BaseModel } from '@/common/types/base-model';
 
 export class InterestModel extends BaseModel {
-	static tableName = process.env.INTERESTS_TABLE;
+  static tableName = process.env.INTERESTS_TABLE;
 
-	static validate({ id, leadId, message }): InferType<typeof interestSchema> | never {
-		return interestSchema.validateSync({
-			id,
-			leadId,
-			message,
-		});
-	}
+  static validate({
+    id,
+    leadId,
+    message,
+  }): InferType<typeof interestSchema> | never {
+    return interestSchema.validateSync({
+      id,
+      leadId,
+      message,
+    });
+  }
 
-	id: string;
-	leadId: string;
-	message: string;
+  id: string;
+  leadId: string;
+  message: string;
 
-	createdAt: number;
-	updatedAt: number | null;
+  createdAt: number;
+  updatedAt: number | null;
 
-	constructor(dto: UpsertInterestDto) {
-		super(dto);
-	}
+  constructor(dto: UpsertInterestDto) {
+    super(dto);
+  }
 
-	getEntityMappings(): InterestTableInterface {
-		return {
-			id: this.id,
-			lead_id: this.leadId,
-			message: this.message,
+  getEntityMappings(): InterestTableInterface {
+    return {
+      id: this.id,
+      lead_id: this.leadId,
+      message: this.message,
 
-			created_at: this.createdAt,
-			updated_at: this.updatedAt,
-		};
-	}
+      created_at: this.createdAt,
+      updated_at: this.updatedAt,
+    };
+  }
 
-	protected hydrate({ leadId, message, id }: UpsertInterestDto) {
-		if (this.isUpdate(id)) {
-			this.id = id;
-			this.updatedAt = new Date().getTime();
-		} else {
-			this.id = UUID();
-			this.createdAt = new Date().getTime();
-		}
-		this.leadId = leadId;
-		this.message = message;
-	}
+  protected hydrate({ leadId, message, id }: UpsertInterestDto) {
+    if (this.isUpdate(id)) {
+      this.id = id;
+      this.updatedAt = new Date().getTime();
+    } else {
+      this.id = UUID();
+      this.createdAt = new Date().getTime();
+    }
+    this.leadId = leadId;
+    this.message = message;
+  }
 }

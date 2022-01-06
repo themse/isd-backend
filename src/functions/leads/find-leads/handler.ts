@@ -7,33 +7,33 @@ import { ApiGatewayHandler } from '@/types/api-gateway';
 import { bodyParser } from '@/middlewares/body-parser.middleware';
 
 const findLeads: ApiGatewayHandler<typeof leadSchema> = async () => {
-	let response: Response;
+  let response: Response;
 
-	try {
-		const repository = new DynamoDBRepository();
-		const leadService = new LeadService(repository);
+  try {
+    const repository = new DynamoDBRepository();
+    const leadService = new LeadService(repository);
 
-		const result = await leadService.find();
+    const result = await leadService.find();
 
-		response = new Response(
-			StatusCode.OK,
-			result,
-			result.length === 0
-				? ResponseMessage.GET_LEAD_NOT_FOUND
-				: ResponseMessage.GET_LEAD_LIST_SUCCESS,
-		);
+    response = new Response(
+      StatusCode.OK,
+      result,
+      result.length === 0
+        ? ResponseMessage.GET_LEAD_NOT_FOUND
+        : ResponseMessage.GET_LEAD_LIST_SUCCESS,
+    );
 
-		return response.generate();
-	} catch (err) {
-		console.log(err);
-		response = new Response(
-			StatusCode.BAD_REQUEST,
-			{},
-			`${ResponseMessage.GET_LEAD_LIST_FAIL}: ${err}`,
-		);
-	}
+    return response.generate();
+  } catch (err) {
+    console.error(err);
+    response = new Response(
+      StatusCode.BAD_REQUEST,
+      {},
+      `${ResponseMessage.GET_LEAD_LIST_FAIL}: ${err}`,
+    );
+  }
 
-	return response.generate();
+  return response.generate();
 };
 
 export const main = bodyParser(findLeads);
