@@ -41,8 +41,18 @@ const serverlessConfiguration: AWS = {
     iamRoleStatements: [
       {
         Effect: 'Allow',
-        Action: ['dynamodb:*'],
-        Resource: '*',
+        Action: [
+          'dynamodb:Query',
+          'dynamodb:Scan',
+          'dynamodb:GetItem',
+          'dynamodb:PutItem',
+          'dynamodb:UpdateItem',
+          'dynamodb:DeleteItem',
+        ],
+        Resource: [
+          { 'Fn::GetAtt': ['LeadsTable', 'Arn'] },
+          { 'Fn::GetAtt': ['InterestsTable', 'Arn'] },
+        ],
       },
     ],
   },
