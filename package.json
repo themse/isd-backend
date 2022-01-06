@@ -6,7 +6,9 @@
   "scripts": {
     "start:dev": "npx sls offline start",
     "invoke:local": "npx sls invoke local",
-    "invoke:local:debug": "SLS_DEBUG=* npx sls invoke local"
+    "invoke:local:debug": "SLS_DEBUG=* npx sls invoke local",
+    "deploy:all": "npx sls deploy",
+    "deploy:function": "npx sls deploy function"
   },
   "engines": {
     "node": ">=14.15.0"
