@@ -1,8 +1,7 @@
 import * as AWS from 'aws-sdk';
 
-import { StatusCode } from '@/common/response/types';
-import { Response } from '@/common/response/response.class';
-import { initDb } from './init';
+import { IBaseRepository } from '@/common/types/base-repository';
+import { setupDbConfig } from './setup-db-config';
 import {
   PutItem,
   PutItemOutput,
@@ -18,17 +17,16 @@ import {
   QueryItemOutput,
 } from './types';
 
-// aws database configuration
-initDb();
+setupDbConfig();
 
 const documentClient = new AWS.DynamoDB.DocumentClient();
 
-export class DynamoDBRepository {
+export class DynamoDBRepository implements IBaseRepository {
   create = async (params: PutItem): Promise<PutItemOutput> => {
     try {
-      return await documentClient.put(params).promise();
+      return documentClient.put(params).promise();
     } catch (error) {
-      throw new Response(StatusCode.ERROR, {}, `create-error: ${error}`);
+      throw new Error(`create-error: ${error}`);
     }
   };
 
@@ -36,7 +34,7 @@ export class DynamoDBRepository {
     try {
       return documentClient.scan(params).promise();
     } catch (error) {
-      throw new Response(StatusCode.ERROR, {}, `find-error: ${error}`);
+      throw new Error(`find-error: ${error}`);
     }
   };
 
@@ -44,7 +42,7 @@ export class DynamoDBRepository {
     try {
       return documentClient.query(params).promise();
     } catch (error) {
-      throw new Response(StatusCode.ERROR, {}, `query-error: ${error}`);
+      throw new Error(`query-error: ${error}`);
     }
   };
 
@@ -52,7 +50,7 @@ export class DynamoDBRepository {
     try {
       return documentClient.get(params).promise();
     } catch (error) {
-      throw new Response(StatusCode.ERROR, {}, `findOne-error: ${error}`);
+      throw new Error(`findOne-error: ${error}`);
     }
   };
 
@@ -60,15 +58,15 @@ export class DynamoDBRepository {
     try {
       return documentClient.update(params).promise();
     } catch (error) {
-      throw new Response(StatusCode.ERROR, {}, `update-error: ${error}`);
+      throw new Error(`update-error: ${error}`);
     }
   };
 
   delete = async (params: DeleteItem): Promise<DeleteItemOutput> => {
     try {
-      return await documentClient.delete(params).promise();
+      return documentClient.delete(params).promise();
     } catch (error) {
-      throw new Response(StatusCode.ERROR, {}, `delete-error: ${error}`);
+      throw new Error(`delete-error: ${error}`);
     }
   };
 }

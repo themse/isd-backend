@@ -1,10 +1,7 @@
 import { ValidationError } from 'yup';
 
-import { GetItem, PutItem } from '@/services/dynamodb/types';
+import { InterestService } from '@/models/interests/interest.service';
 import { DynamoDBRepository } from '@/services/dynamodb/dynamodb-repository';
-import { InterestModel } from '@/models/interests/interest.model';
-import { LeadModel } from '@/models/leads/lead.model';
-
 import { interestSchema } from '@/models/interests/interest.schema';
 import { Response } from '@/common/response/response.class';
 import { ApiGatewayHandler } from '@/types/api-gateway';
@@ -19,17 +16,11 @@ const createInterest: ApiGatewayHandler<typeof interestSchema> = async (
 
   try {
     const repository = new DynamoDBRepository();
+    const interestService = new InterestService(repository);
 
-    const validatedData = InterestModel.validate(requestData);
+    const result = await interestService.create(requestData);
 
-    const leadParam: GetItem = {
-      TableName: LeadModel.tableName,
-      Key: {
-        id: validatedData.leadId,
-      },
-    };
-    const lead = await repository.findOne(leadParam);
-    if (Object.keys(lead).length === 0) {
+    if (!result) {
       response = new Response(
         StatusCode.BAD_REQUEST,
         {},
@@ -39,25 +30,16 @@ const createInterest: ApiGatewayHandler<typeof interestSchema> = async (
       return response.generate();
     }
 
-    const interestModel = new InterestModel(validatedData);
-    const data = interestModel.getEntityMappings();
-
-    const interestParam: PutItem = {
-      TableName: InterestModel.tableName,
-      Item: data,
-    };
-
-    await repository.create(interestParam);
-
     response = new Response(
       StatusCode.CREATED,
-      { interestId: interestModel.id },
+      result,
       ResponseMessage.CREATE_INTEREST_SUCCESS
     );
 
     return response.generate();
   } catch (err) {
     console.log(err);
+
     if (err instanceof ValidationError) {
       response = new Response(StatusCode.BAD_REQUEST, {}, err.message);
     } else {

@@ -1,10 +1,11 @@
 import { v4 as UUID } from 'uuid';
 import { InferType } from 'yup';
 
+import { BaseModel } from '@/common/types/base-model';
 import { leadSchema } from './lead.schema';
 import { LeadTableInterface, UpsertLeadDto } from './types';
 
-export class LeadModel {
+export class LeadModel extends BaseModel {
   static tableName = process.env.LEADS_TABLE;
 
   static validate({
@@ -34,7 +35,7 @@ export class LeadModel {
   updatedAt: number | null;
 
   constructor(dto: UpsertLeadDto) {
-    this.hydrate(dto);
+    super(dto);
   }
 
   getEntityMappings(): LeadTableInterface {
@@ -62,9 +63,5 @@ export class LeadModel {
     this.phone = phone;
     this.firstName = firstName;
     this.lastName = lastName;
-  }
-
-  protected isUpdate(id: string | undefined): boolean {
-    return Boolean(id);
   }
 }

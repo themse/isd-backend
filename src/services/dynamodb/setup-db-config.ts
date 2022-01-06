@@ -1,6 +1,6 @@
 import * as AWS from 'aws-sdk';
 
-export const initDb = () => {
+export const setupDbConfig = () => {
   let options: {} = { region: 'eu-central-1' };
 
   if (process.env.STAGE === process.env.DYNAMODB_LOCAL_STAGE) {

@@ -3,8 +3,9 @@ import { v4 as UUID } from 'uuid';
 
 import { interestSchema } from './interest.schema';
 import { UpsertInterestDto, InterestTableInterface } from './types';
+import { BaseModel } from '@/common/types/base-model';
 
-export class InterestModel {
+export class InterestModel extends BaseModel {
   static tableName = process.env.INTERESTS_TABLE;
 
   static validate({
@@ -27,7 +28,7 @@ export class InterestModel {
   updatedAt: number | null;
 
   constructor(dto: UpsertInterestDto) {
-    this.hydrate(dto);
+    super(dto);
   }
 
   getEntityMappings(): InterestTableInterface {
@@ -51,9 +52,5 @@ export class InterestModel {
     }
     this.leadId = leadId;
     this.message = message;
-  }
-
-  protected isUpdate(id: string | undefined): boolean {
-    return Boolean(id);
   }
 }
