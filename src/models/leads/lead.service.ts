@@ -100,7 +100,6 @@ export class LeadService {
     return result.Count > 0;
   }
 
-  // TODO add phone form validation
   protected async isPhoneExist(phone: string) {
     const params: QueryItem = {
       TableName: LeadModel.tableName,

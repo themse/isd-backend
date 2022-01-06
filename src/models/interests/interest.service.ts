@@ -1,8 +1,9 @@
+import { InferType } from 'yup';
+
 import { LeadModel } from '@/models/leads/lead.model';
 import { InterestModel } from '@/models/interests/interest.model';
 import { interestSchema } from '@/models/interests/interest.schema';
 import { IBaseRepository } from '@/common/types/base-repository';
-import { InferType } from 'yup';
 import { GetItem, PutItem } from '@/services/dynamodb/types';
 
 export class InterestService {
