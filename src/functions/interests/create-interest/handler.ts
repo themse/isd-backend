@@ -8,49 +8,39 @@ import { ApiGatewayHandler } from '@/types/api-gateway';
 import { bodyParser } from '@/middlewares/body-parser.middleware';
 import { StatusCode, ResponseMessage } from '@/common/response/types';
 
-const createInterest: ApiGatewayHandler<typeof interestSchema> = async (
-  event
-) => {
-  let response: Response;
-  const { body: requestData } = event;
+const createInterest: ApiGatewayHandler<typeof interestSchema> = async (event) => {
+	let response: Response;
+	const { body: requestData } = event;
 
-  try {
-    const repository = new DynamoDBRepository();
-    const interestService = new InterestService(repository);
+	try {
+		const repository = new DynamoDBRepository();
+		const interestService = new InterestService(repository);
 
-    const result = await interestService.create(requestData);
+		const result = await interestService.create(requestData);
 
-    if (!result) {
-      response = new Response(
-        StatusCode.BAD_REQUEST,
-        {},
-        ResponseMessage.GET_LEAD_NOT_FOUND
-      );
+		if (!result) {
+			response = new Response(StatusCode.BAD_REQUEST, {}, ResponseMessage.GET_LEAD_NOT_FOUND);
 
-      return response.generate();
-    }
+			return response.generate();
+		}
 
-    response = new Response(
-      StatusCode.CREATED,
-      result,
-      ResponseMessage.CREATE_INTEREST_SUCCESS
-    );
+		response = new Response(StatusCode.CREATED, result, ResponseMessage.CREATE_INTEREST_SUCCESS);
 
-    return response.generate();
-  } catch (err) {
-    console.log(err);
+		return response.generate();
+	} catch (err) {
+		console.log(err);
 
-    if (err instanceof ValidationError) {
-      response = new Response(StatusCode.BAD_REQUEST, {}, err.message);
-    } else {
-      response = new Response(
-        StatusCode.BAD_REQUEST,
-        {},
-        `${ResponseMessage.CREATE_INTEREST_FAIL}: ${err}`
-      );
-    }
-  }
-  return response.generate();
+		if (err instanceof ValidationError) {
+			response = new Response(StatusCode.BAD_REQUEST, {}, err.message);
+		} else {
+			response = new Response(
+				StatusCode.BAD_REQUEST,
+				{},
+				`${ResponseMessage.CREATE_INTEREST_FAIL}: ${err}`,
+			);
+		}
+	}
+	return response.generate();
 };
 
 export const main = bodyParser(createInterest);

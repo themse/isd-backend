@@ -9,36 +9,32 @@ import { bodyParser } from '@/middlewares/body-parser.middleware';
 import { LeadService } from '@/models/leads/lead.service';
 
 const createLead: ApiGatewayHandler<typeof leadSchema> = async (event) => {
-  let response: Response;
-  const { body: requestData } = event;
+	let response: Response;
+	const { body: requestData } = event;
 
-  try {
-    const repository = new DynamoDBRepository();
-    const leadService = new LeadService(repository);
+	try {
+		const repository = new DynamoDBRepository();
+		const leadService = new LeadService(repository);
 
-    const result = await leadService.create(requestData);
+		const result = await leadService.create(requestData);
 
-    response = new Response(
-      StatusCode.CREATED,
-      result,
-      ResponseMessage.CREATE_LEAD_SUCCESS
-    );
+		response = new Response(StatusCode.CREATED, result, ResponseMessage.CREATE_LEAD_SUCCESS);
 
-    return response.generate();
-  } catch (err) {
-    console.log(err);
+		return response.generate();
+	} catch (err) {
+		console.log(err);
 
-    if (err instanceof ValidationError) {
-      response = new Response(StatusCode.BAD_REQUEST, {}, err.message);
-    } else {
-      response = new Response(
-        StatusCode.BAD_REQUEST,
-        {},
-        `${ResponseMessage.CREATE_LEAD_FAIL}: ${err}`
-      );
-    }
-  }
-  return response.generate();
+		if (err instanceof ValidationError) {
+			response = new Response(StatusCode.BAD_REQUEST, {}, err.message);
+		} else {
+			response = new Response(
+				StatusCode.BAD_REQUEST,
+				{},
+				`${ResponseMessage.CREATE_LEAD_FAIL}: ${err}`,
+			);
+		}
+	}
+	return response.generate();
 };
 
 export const main = bodyParser(createLead);
