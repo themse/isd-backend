@@ -8,7 +8,8 @@
     "invoke:local": "npx sls invoke local",
     "invoke:local:debug": "SLS_DEBUG=* npx sls invoke local",
     "deploy:all": "npx sls deploy",
-    "deploy:function": "npx sls deploy function"
+    "deploy:function": "npx sls deploy function",
+    "lint": "eslint ./src/** --fix"
   },
   "engines": {
     "node": ">=14.15.0"
@@ -23,7 +24,13 @@
     "@serverless/typescript": "^2.23.0",
     "@types/aws-lambda": "^8.10.71",
     "@types/node": "^14.14.25",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
     "aws-sdk": "^2.1050.0",
+    "eslint": "^8.6.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1",
     "serverless": "^2.23.0",
     "serverless-dynamodb-local": "^0.2.40",
     "serverless-esbuild": "^1.17.1",
