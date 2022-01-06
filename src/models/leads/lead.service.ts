@@ -24,6 +24,16 @@ export class LeadService {
     const leadModel = new LeadModel(validatedData);
 
     const data = leadModel.getEntityMappings();
+
+    const checkExist = await Promise.all([
+      this.isEmailExist(data.email),
+      this.isPhoneExist(data.phone),
+    ]);
+
+    if (checkExist.includes(true)) {
+      throw new Error('email or phone is already registered');
+    }
+
     const params: PutItem = {
       TableName: LeadModel.tableName,
       Item: data,
@@ -71,5 +81,40 @@ export class LeadService {
     }
 
     return Object.values(result);
+  }
+
+  protected async isEmailExist(email: string) {
+    const params: QueryItem = {
+      TableName: LeadModel.tableName,
+      IndexName: 'lead_email_index',
+      KeyConditionExpression: 'email = :v_email',
+      ExpressionAttributeValues: {
+        ':v_email': email,
+      },
+      ProjectionExpression: 'id',
+      Limit: 1,
+    };
+
+    const result = (await this.repository.query(params)) as QueryItemOutput;
+
+    return result.Count > 0;
+  }
+
+  // TODO add phone form validation
+  protected async isPhoneExist(phone: string) {
+    const params: QueryItem = {
+      TableName: LeadModel.tableName,
+      IndexName: 'lead_phone_index',
+      KeyConditionExpression: 'phone = :v_phone',
+      ExpressionAttributeValues: {
+        ':v_phone': phone,
+      },
+      ProjectionExpression: 'id',
+      Limit: 1,
+    };
+
+    const result = (await this.repository.query(params)) as QueryItemOutput;
+
+    return result.Count > 0;
   }
 }

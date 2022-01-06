@@ -29,7 +29,7 @@ const findLeads: ApiGatewayHandler<typeof leadSchema> = async () => {
     response = new Response(
       StatusCode.BAD_REQUEST,
       {},
-      ResponseMessage.GET_LEAD_LIST_FAIL
+      `${ResponseMessage.GET_LEAD_LIST_FAIL}: ${err}`
     );
   }
 

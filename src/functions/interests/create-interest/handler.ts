@@ -46,7 +46,7 @@ const createInterest: ApiGatewayHandler<typeof interestSchema> = async (
       response = new Response(
         StatusCode.BAD_REQUEST,
         {},
-        ResponseMessage.CREATE_INTEREST_FAIL
+        `${ResponseMessage.CREATE_INTEREST_FAIL}: ${err}`
       );
     }
   }

@@ -34,7 +34,7 @@ const createLead: ApiGatewayHandler<typeof leadSchema> = async (event) => {
       response = new Response(
         StatusCode.BAD_REQUEST,
         {},
-        ResponseMessage.CREATE_LEAD_FAIL
+        `${ResponseMessage.CREATE_LEAD_FAIL}: ${err}`
       );
     }
   }
