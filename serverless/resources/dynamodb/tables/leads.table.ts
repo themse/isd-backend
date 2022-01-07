@@ -1,11 +1,12 @@
 import { AttributeType, ProjectionType } from '@aws-cdk/aws-dynamodb';
 
 import { DynamoDBTableInterface, KeyType } from '../dynamodb-table.interface';
+import { tableNames, tableThroughput } from '../config';
 
 export const leadsTable: DynamoDBTableInterface = {
   Type: 'AWS::DynamoDB::Table',
   Properties: {
-    TableName: '${self:custom.leads_table}',
+    TableName: tableNames.leads_table,
     KeySchema: [
       {
         AttributeName: 'id',
@@ -18,8 +19,8 @@ export const leadsTable: DynamoDBTableInterface = {
       { AttributeName: 'phone', AttributeType: AttributeType.STRING },
     ],
     ProvisionedThroughput: {
-      ReadCapacityUnits: '${self:custom.table_throughput}',
-      WriteCapacityUnits: '${self:custom.table_throughput}',
+      ReadCapacityUnits: tableThroughput.throughput,
+      WriteCapacityUnits: tableThroughput.throughput,
     },
     GlobalSecondaryIndexes: [
       {
@@ -29,8 +30,8 @@ export const leadsTable: DynamoDBTableInterface = {
           ProjectionType: ProjectionType.ALL,
         },
         ProvisionedThroughput: {
-          ReadCapacityUnits: '${self:custom.table_throughput}',
-          WriteCapacityUnits: '${self:custom.table_throughput}',
+          ReadCapacityUnits: tableThroughput.throughput,
+          WriteCapacityUnits: tableThroughput.throughput,
         },
       },
       {
@@ -40,8 +41,8 @@ export const leadsTable: DynamoDBTableInterface = {
           ProjectionType: ProjectionType.ALL,
         },
         ProvisionedThroughput: {
-          ReadCapacityUnits: '${self:custom.table_throughput}',
-          WriteCapacityUnits: '${self:custom.table_throughput}',
+          ReadCapacityUnits: tableThroughput.throughput,
+          WriteCapacityUnits: tableThroughput.throughput,
         },
       },
     ],

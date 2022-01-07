@@ -1,11 +1,12 @@
 import { AttributeType, ProjectionType } from '@aws-cdk/aws-dynamodb';
 
 import { DynamoDBTableInterface, KeyType } from '../dynamodb-table.interface';
+import { tableNames, tableThroughput } from '../config';
 
 export const interestsTable: DynamoDBTableInterface = {
   Type: 'AWS::DynamoDB::Table',
   Properties: {
-    TableName: '${self:custom.interests_table}',
+    TableName: tableNames.interests_table,
     KeySchema: [
       { AttributeName: 'id', KeyType: KeyType.HASH },
       { AttributeName: 'lead_id', KeyType: KeyType.RANGE },
@@ -15,8 +16,8 @@ export const interestsTable: DynamoDBTableInterface = {
       { AttributeName: 'lead_id', AttributeType: AttributeType.STRING },
     ],
     ProvisionedThroughput: {
-      ReadCapacityUnits: '${self:custom.table_throughput}',
-      WriteCapacityUnits: '${self:custom.table_throughput}',
+      ReadCapacityUnits: tableThroughput.throughput,
+      WriteCapacityUnits: tableThroughput.throughput,
     },
     GlobalSecondaryIndexes: [
       {
@@ -31,8 +32,8 @@ export const interestsTable: DynamoDBTableInterface = {
           ProjectionType: ProjectionType.ALL,
         },
         ProvisionedThroughput: {
-          ReadCapacityUnits: '${self:custom.table_throughput}',
-          WriteCapacityUnits: '${self:custom.table_throughput}',
+          ReadCapacityUnits: tableThroughput.throughput,
+          WriteCapacityUnits: tableThroughput.throughput,
         },
       },
     ],

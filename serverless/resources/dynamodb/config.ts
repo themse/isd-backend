@@ -20,10 +20,10 @@ export const tableNames = {
 };
 
 export const tableThroughput = {
-  table_throughput_list: {
+  throughput_list: {
     prod: 5,
     default: 1,
   },
-  table_throughput:
-    '${self:custom.table_throughput_list.${self:custom.stage}, self:custom.table_throughput_list.default}',
+  throughput:
+    '${self:custom.dynamodb_variables.throughput.throughput_list.${self:custom.stage}, self:custom.dynamodb_variables.throughput.throughput_list.default}',
 };

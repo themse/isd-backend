@@ -1,13 +1,15 @@
 import type { AWS } from '@serverless/typescript';
+
 import {
   dynamoDBConfig,
   tableNames,
   tableThroughput,
-} from 'src/services/dynamodb/config';
-import { leadsTable, interestsTable } from 'src/services/dynamodb/tables';
+} from './serverless/resources/dynamodb/config';
+import resources from './serverless/resources';
+import { functions } from './serverless/functions';
+import environment from './serverless/provider/environment';
 
-import * as functions from '@/functions/index';
-
+// serverless config details https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml/
 const serverlessConfiguration: AWS = {
   service: 'isd-backend',
   frameworkVersion: '2',
@@ -25,18 +27,7 @@ const serverlessConfiguration: AWS = {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
     },
-    environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-
-      LEADS_TABLE: '${self:custom.leads_table}',
-      INTERESTS_TABLE: '${self:custom.interests_table}',
-
-      STAGE: '${self:custom.stage}',
-      DYNAMODB_LOCAL_STAGE: '${self:custom.dynamodbLocalStage}',
-      DYNAMODB_LOCAL_ENDPOINT: '${self:custom.dynamodbLocalEndpoint}',
-      DYNAMODB_LOCAL_REGION: '${self:custom.dynamodbLocalRegion}',
-    },
+    environment,
     lambdaHashingVersion: '20201221',
     iamRoleStatements: [
       {
@@ -58,17 +49,21 @@ const serverlessConfiguration: AWS = {
   },
 
   functions,
+  resources,
 
   package: { individually: true },
   custom: {
     // variables
     stage: '${opt:stage, self:provider.stage}',
-    ...tableThroughput,
-    ...tableNames,
-    dynamodbLocalStage: 'dev',
-    dynamodbLocalEndpoint: 'http://localhost:8008',
-    dynamodbLocalRegion: 'localhost',
 
+    dynamodb_variables: {
+      tables: tableNames,
+      throughput: tableThroughput,
+
+      dynamodb_local_stage: 'dev',
+      dynamodb_local_endpoint: 'http://localhost:8008',
+      dynamodb_local_region: 'localhost',
+    },
     dynamodb: dynamoDBConfig,
 
     esbuild: {
@@ -83,12 +78,6 @@ const serverlessConfiguration: AWS = {
     },
     ['serverless-offline']: {
       httpPort: 4500,
-    },
-  },
-  resources: {
-    Resources: {
-      LeadsTable: leadsTable,
-      InterestsTable: interestsTable,
     },
   },
 };
