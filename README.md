@@ -100,6 +100,11 @@ The project code base is mainly located within the `src` folder. This folder is 
 - `services` - containing abstractions for external services
 - `utils` - containing tools and helpers
 
+[Serverless Framework](https://www.serverless.com/) is configured in:
+
+- `serverless.ts` - main configuration file
+- `serverless` - a folder with partials configurations
+
 ## Tech stack
 
 Here's a brief high-level overview of the tech stack the ISD App uses:
