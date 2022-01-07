@@ -5,41 +5,59 @@ A service that provides you with an easy way to manage potential ***Leads*** and
 ## Running this project locally
 
 - Install all dependencies:
+
 ```bash
- $ npm i
+ npm i
 ```
+
 - Install ***serverless*** tool globally or use ***npx***
+
 ```bash
- $ npm i -g serverless
+ npm i -g serverless
 ```
+
 or
+
 ```bash
- $ npx serverless
+ npx serverless
 ```
+
 - Install DynamoDB
+
 ```bash
-$ npx sls dynamodb install
+npx sls dynamodb install
 ```
+
 ## Start working with API
 
 - Start application in offline mode:
+
 ```bash
-$ npm run start:dev
+npm run start:dev
 ```
+
 - Also we can invoke a single function:
+
 ```bash
-$ npm run invoke:local -- -f <functionName>
+npm run invoke:local -- -f <functionName>
 ```  
+
 - We can run function in debug mode to see additional logs
+
 ```bash
-$ npm run invoke:local:debug -- -f <functionName>
+npm run invoke:local:debug -- -f <functionName>
 ```  
+
 Check the [sls invoke local command documentation](https://www.serverless.com/framework/docs/providers/aws/cli-reference/invoke-local/) for more information.
 
 ## Remotely
+
 We can use Postman or Insomnia to test api (in future it will be swagger).
-### Basic requests:
+
+### Basic requests
+
 - Create a lead
+
 ```bash
 curl --location --request POST 'http://localhost:4500/dev/lead' \
 --header 'Content-Type: application/json' \
@@ -50,7 +68,9 @@ curl --location --request POST 'http://localhost:4500/dev/lead' \
     "lastName":"Russel"
 }'
 ```
+
 - Add lead interest (we can get ***leadId*** from the previous request)
+
 ```bash
 curl --location --request POST 'http://localhost:4500/dev/interest' \
 --header 'Content-Type: application/json' \
@@ -59,11 +79,14 @@ curl --location --request POST 'http://localhost:4500/dev/interest' \
     "message": "hello world"
 }'
 ```
+
 - Find all leads with their interests
+
 ```bash
 curl --location --request GET 'http://localhost:4500/dev/leads' \
 --header 'Content-Type: application/json' 
 ```  
+
 ## Template features
 
 ### Project structure
@@ -90,19 +113,27 @@ Here's a brief high-level overview of the tech stack the ISD App uses:
 ## Deployment
 
 Firstly check if you authorized in aws console.
+
 - Deploy the whole application to the cloud:
+
 ```bash
-$ npx run deploy:all
+npx run deploy:all
 ```
+
 - Deploy a single function
+
 ```bash
-$ npx run deploy:function -- -f <functionName>
+npx run deploy:function -- -f <functionName>
 ```
+
 - For more details
+
 ```bash
-$ npx run deploy:function -- --help
+npx run deploy:function -- --help
 ```
+
 ## Future steps
-- Swagger 
+
+- Swagger
 - Unit and e2e tests
 - Authorization
