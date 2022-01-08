@@ -1,12 +1,13 @@
 import { ValidationError } from 'yup';
 
-import { InterestService } from '@/models/interests/interest.service';
-import { DynamoDBRepository } from '@/services/dynamodb/dynamodb-repository';
 import { interestSchema } from '@/models/interests/interest.schema';
 import { Response } from '@/common/response/response.class';
 import { ApiGatewayHandler } from '@/types/api-gateway';
 import { bodyParser } from '@/middlewares/body-parser.middleware';
 import { StatusCode, ResponseMessage } from '@/common/response/types';
+import appContainer from '@/common/di/container';
+import { TYPES } from '@/common/di/types';
+import { IInterestService } from '@/models/interests/interest.service.interface';
 
 const createInterest: ApiGatewayHandler<typeof interestSchema> = async (
   event,
@@ -15,8 +16,9 @@ const createInterest: ApiGatewayHandler<typeof interestSchema> = async (
   const { body: requestData } = event;
 
   try {
-    const repository = new DynamoDBRepository();
-    const interestService = new InterestService(repository);
+    const interestService = appContainer.get<IInterestService>(
+      TYPES.InterestService,
+    );
 
     const result = await interestService.create(requestData);
 

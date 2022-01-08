@@ -1,29 +1,33 @@
-import { InferType } from 'yup';
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 
-import { LeadModel } from '@/models/leads/lead.model';
 import { InterestModel } from '@/models/interests/interest.model';
-import { interestSchema } from '@/models/interests/interest.schema';
 import { IBaseRepository } from '@/common/types/base-repository';
-import { GetItem, PutItem } from '@/services/dynamodb/types';
+import { PutItem } from '@/services/dynamodb/types';
+import { InterestCreateDto } from './types';
+import { TYPES } from '@/common/di/types';
+import { IInterestService } from './interest.service.interface';
+import { ILeadService } from '../leads/lead.service.interface';
 
-export class InterestService {
+@injectable()
+export class InterestService implements IInterestService {
   private readonly repository: IBaseRepository;
+  private readonly leadService: ILeadService;
 
-  constructor(repository: IBaseRepository) {
+  constructor(
+    @inject(TYPES.Repository) repository: IBaseRepository,
+    @inject(TYPES.LeadService) leadService: ILeadService,
+  ) {
     this.repository = repository;
+    this.leadService = leadService;
   }
 
-  async create(dto: InferType<typeof interestSchema>) {
+  async create(dto: InterestCreateDto) {
     const validatedData = InterestModel.validate(dto);
 
-    const leadParam: GetItem = {
-      TableName: LeadModel.tableName,
-      Key: {
-        id: validatedData.leadId,
-      },
-    };
-
-    const lead = await this.repository.findOne(leadParam);
+    const lead = await this.leadService.findOne({
+      leadId: validatedData.leadId,
+    });
 
     if (Object.keys(lead).length === 0) {
       return null; // TODO better throw error

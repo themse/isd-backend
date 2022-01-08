@@ -1,4 +1,5 @@
-import { InferType } from 'yup';
+import { inject, injectable } from 'inversify';
+import 'reflect-metadata';
 
 import { InterestModel } from '@/models/interests/interest.model';
 import {
@@ -7,19 +8,23 @@ import {
   PutItem,
   ScanItem,
   QueryItem,
+  GetItem,
 } from '@/services/dynamodb/types';
-import { leadSchema } from '@/models/leads/lead.schema';
 import { LeadModel } from '@/models/leads/lead.model';
 import { IBaseRepository } from '@/common/types/base-repository';
+import { TYPES } from '@/common/di/types';
+import { LeadCreateDto } from './types';
+import { ILeadService } from './lead.service.interface';
 
-export class LeadService {
+@injectable()
+export class LeadService implements ILeadService {
   private readonly repository: IBaseRepository;
 
-  constructor(repository: IBaseRepository) {
+  constructor(@inject(TYPES.Repository) repository: IBaseRepository) {
     this.repository = repository;
   }
 
-  async create(dto: InferType<typeof leadSchema>) {
+  async create(dto: LeadCreateDto) {
     const validatedData = LeadModel.validate(dto);
     const leadModel = new LeadModel(validatedData);
 
@@ -81,6 +86,17 @@ export class LeadService {
     }
 
     return Object.values(result);
+  }
+
+  async findOne(params: { leadId: string }) {
+    const leadParam: GetItem = {
+      TableName: LeadModel.tableName,
+      Key: {
+        id: params.leadId,
+      },
+    };
+
+    return this.repository.findOne(leadParam);
   }
 
   protected async isEmailExist(email: string) {

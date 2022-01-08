@@ -1,3 +1,8 @@
+import { InferType } from 'yup';
+
+import { InterestModel } from './interest.model';
+import { interestSchema } from './interest.schema';
+
 export interface InterestTableInterface {
   id: string;
   lead_id: string;
@@ -7,7 +12,14 @@ export interface InterestTableInterface {
   updated_at: number;
 }
 
-export type UpsertInterestDto = {
+export type InterestEntity = Omit<
+  Pick<InterestModel, keyof InterestModel>,
+  'getEntityMappings'
+>;
+
+export type InterestCreateDto = InferType<typeof interestSchema>;
+
+export type InterestUpsertDto = {
   leadId: string;
   message: string;
 

@@ -1,21 +1,20 @@
 import { ValidationError } from 'yup';
 
 import { leadSchema } from '@/models/leads/lead.schema';
-import { DynamoDBRepository } from '@/services/dynamodb/dynamodb-repository';
 import { ResponseMessage, StatusCode } from '@/common/response/types';
 import { Response } from '@/common/response/response.class';
 import { ApiGatewayHandler } from '@/types/api-gateway';
 import { bodyParser } from '@/middlewares/body-parser.middleware';
-import { LeadService } from '@/models/leads/lead.service';
+import appContainer from '@/common/di/container';
+import { TYPES } from '@/common/di/types';
+import { ILeadService } from '@/models/leads/lead.service.interface';
 
 const createLead: ApiGatewayHandler<typeof leadSchema> = async (event) => {
   let response: Response;
   const { body: requestData } = event;
 
   try {
-    const repository = new DynamoDBRepository();
-    const leadService = new LeadService(repository);
-
+    const leadService = appContainer.get<ILeadService>(TYPES.LeadService);
     const result = await leadService.create(requestData);
 
     response = new Response(

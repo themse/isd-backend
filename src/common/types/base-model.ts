@@ -1,4 +1,6 @@
-export abstract class BaseModel {
+import { IModel } from './model.interface';
+
+export abstract class BaseModel implements IModel {
   constructor(dto: unknown) {
     this.hydrate(dto);
   }

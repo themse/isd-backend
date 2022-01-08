@@ -1,4 +1,6 @@
 import * as AWS from 'aws-sdk';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
 
 import { IBaseRepository } from '@/common/types/base-repository';
 import { setupDbConfig } from './setup-db-config';
@@ -21,6 +23,7 @@ setupDbConfig();
 
 const documentClient = new AWS.DynamoDB.DocumentClient();
 
+@injectable()
 export class DynamoDBRepository implements IBaseRepository {
   create = async (params: PutItem): Promise<PutItemOutput> => {
     try {

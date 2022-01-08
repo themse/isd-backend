@@ -3,7 +3,7 @@ import { InferType } from 'yup';
 
 import { BaseModel } from '@/common/types/base-model';
 import { leadSchema } from './lead.schema';
-import { LeadTableInterface, UpsertLeadDto } from './types';
+import { LeadTableInterface, LeadUpsertDto } from './types';
 
 export class LeadModel extends BaseModel {
   static tableName = process.env.LEADS_TABLE;
@@ -34,7 +34,7 @@ export class LeadModel extends BaseModel {
   createdAt: number;
   updatedAt: number | null;
 
-  constructor(dto: UpsertLeadDto) {
+  constructor(dto: LeadUpsertDto) {
     super(dto);
   }
 

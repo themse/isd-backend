@@ -1,3 +1,8 @@
+import { InferType } from 'yup';
+
+import { LeadModel } from './lead.model';
+import { leadSchema } from './lead.schema';
+
 export interface LeadTableInterface {
   id: string;
   email: string;
@@ -9,7 +14,14 @@ export interface LeadTableInterface {
   updated_at: number;
 }
 
-export type UpsertLeadDto = {
+export type LeadEntity = Omit<
+  Pick<LeadModel, keyof LeadModel>,
+  'getEntityMappings'
+>;
+
+export type LeadCreateDto = InferType<typeof leadSchema>;
+
+export type LeadUpsertDto = {
   email: string;
   phone: string;
   firstName: string;

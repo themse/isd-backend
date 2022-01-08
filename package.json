@@ -17,6 +17,8 @@
   "dependencies": {
     "@middy/core": "^2.5.3",
     "@middy/http-json-body-parser": "^2.5.3",
+    "inversify": "^6.0.1",
+    "reflect-metadata": "^0.1.13",
     "yup": "^0.32.11"
   },
   "devDependencies": {
