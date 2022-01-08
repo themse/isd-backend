@@ -59,7 +59,7 @@ We can use Postman or Insomnia to test api (in future it will be swagger).
 - Create a lead
 
 ```bash
-curl --location --request POST 'http://localhost:4500/dev/lead' \
+curl --location --request POST 'http://localhost:4500/lead' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "email":"isd@example.com",
@@ -72,7 +72,7 @@ curl --location --request POST 'http://localhost:4500/dev/lead' \
 - Add lead interest (we can get ***leadId*** from the previous request)
 
 ```bash
-curl --location --request POST 'http://localhost:4500/dev/interest' \
+curl --location --request POST 'http://localhost:4500/interest' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "leadId": "eab29a17-4f5d-4285-9c71-ed78a7d833b1",
@@ -83,7 +83,7 @@ curl --location --request POST 'http://localhost:4500/dev/interest' \
 - Find all leads with their interests
 
 ```bash
-curl --location --request GET 'http://localhost:4500/dev/leads' \
+curl --location --request GET 'http://localhost:4500/leads' \
 --header 'Content-Type: application/json' 
 ```  
 
@@ -118,6 +118,12 @@ Here's a brief high-level overview of the tech stack the ISD App uses:
 ## Deployment
 
 Firstly check if you authorized in aws console.
+
+- Build the project before deployment (in folder `.serverless`)
+  
+```bash
+npm run build
+```
 
 - Deploy the whole application to the cloud:
 

@@ -4,7 +4,8 @@
   "description": "Imaginary Sales Department",
   "main": "serverless.ts",
   "scripts": {
-    "start:dev": "npx sls offline start",
+    "start:dev": "npx sls offline start --noPrependStageInUrl",
+    "build": "npx sls package",
     "invoke:local": "npx sls invoke local",
     "invoke:local:debug": "SLS_DEBUG=* npx sls invoke local",
     "deploy:all": "npx sls deploy",
