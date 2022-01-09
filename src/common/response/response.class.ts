@@ -8,7 +8,7 @@ import {
 
 export class Response {
   private body: ResponseBodyType;
-  private code: number;
+  private code: StatusCode;
 
   constructor(code = StatusCode.BAD_REQUEST, data = {}, message = '') {
     this.body = {
