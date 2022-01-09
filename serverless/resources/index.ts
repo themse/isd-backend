@@ -1,4 +1,4 @@
-import { DynamoDBResources } from './dynamodb/tables/index';
+import { DynamoDBResources } from './dynamodb';
 
 export default {
   Resources: { ...DynamoDBResources },
