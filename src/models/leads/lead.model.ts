@@ -51,7 +51,7 @@ export class LeadModel extends BaseModel {
     };
   }
 
-  protected hydrate({ email, phone, firstName, lastName, id }: UpsertLeadDto) {
+  protected hydrate({ email, phone, firstName, lastName, id }: LeadUpsertDto) {
     if (this.isUpdate(id)) {
       this.id = id;
       this.updatedAt = new Date().getTime();

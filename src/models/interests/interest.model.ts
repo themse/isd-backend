@@ -2,7 +2,7 @@ import { InferType } from 'yup';
 import { v4 as UUID } from 'uuid';
 
 import { interestSchema } from './interest.schema';
-import { UpsertInterestDto, InterestTableInterface } from './types';
+import { InterestUpsertDto, InterestTableInterface } from './types';
 import { BaseModel } from '@/common/types/base-model';
 
 export class InterestModel extends BaseModel {
@@ -27,7 +27,7 @@ export class InterestModel extends BaseModel {
   createdAt: number;
   updatedAt: number | null;
 
-  constructor(dto: UpsertInterestDto) {
+  constructor(dto: InterestUpsertDto) {
     super(dto);
   }
 
@@ -42,7 +42,7 @@ export class InterestModel extends BaseModel {
     };
   }
 
-  protected hydrate({ leadId, message, id }: UpsertInterestDto) {
+  protected hydrate({ leadId, message, id }: InterestUpsertDto) {
     if (this.isUpdate(id)) {
       this.id = id;
       this.updatedAt = new Date().getTime();
