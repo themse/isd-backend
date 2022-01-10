@@ -19,7 +19,7 @@ export type LeadEntity = Omit<
   'getEntityMappings'
 >;
 
-export type LeadCreateDto = InferType<typeof leadSchema>;
+export type LeadCreateDto = Omit<InferType<typeof leadSchema>, 'id'>;
 
 export type LeadUpsertDto = {
   email: string;

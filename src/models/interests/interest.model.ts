@@ -6,7 +6,7 @@ import { InterestUpsertDto, InterestTableInterface } from './types';
 import { BaseModel } from '@/common/types/base-model';
 
 export class InterestModel extends BaseModel {
-  static tableName = process.env.INTERESTS_TABLE;
+  static tableName = process.env.INTERESTS_TABLE ?? 'InterestsTable';
 
   static validate({
     id,

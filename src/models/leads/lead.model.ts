@@ -6,14 +6,14 @@ import { leadSchema } from './lead.schema';
 import { LeadTableInterface, LeadUpsertDto } from './types';
 
 export class LeadModel extends BaseModel {
-  static tableName = process.env.LEADS_TABLE;
+  static tableName = process.env.LEADS_TABLE ?? 'LeadsTable';
 
   static validate({
-    id,
     email,
     phone,
     firstName,
     lastName,
+    id = null,
   }): InferType<typeof leadSchema> | never {
     return leadSchema.validateSync({
       id,
