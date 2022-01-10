@@ -17,7 +17,7 @@ export type InterestEntity = Omit<
   'getEntityMappings'
 >;
 
-export type InterestCreateDto = InferType<typeof interestSchema>;
+export type InterestCreateDto = Omit<InferType<typeof interestSchema>, 'id'>;
 
 export type InterestUpsertDto = {
   leadId: string;

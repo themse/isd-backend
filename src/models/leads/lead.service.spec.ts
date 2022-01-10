@@ -1,8 +1,8 @@
-import { LeadCreateDto } from './types';
 import { Container } from 'inversify';
 import 'reflect-metadata';
 import casual from 'casual';
 
+import { LeadCreateDto } from './types';
 import { InterestModel } from '../interests/interest.model';
 import { ILeadService } from './lead.service.interface';
 import { LeadService } from './lead.service';

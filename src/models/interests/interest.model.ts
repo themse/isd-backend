@@ -9,9 +9,9 @@ export class InterestModel extends BaseModel {
   static tableName = process.env.INTERESTS_TABLE ?? 'InterestsTable';
 
   static validate({
-    id,
     leadId,
     message,
+    id = null,
   }): InferType<typeof interestSchema> | never {
     return interestSchema.validateSync({
       id,

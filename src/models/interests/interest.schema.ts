@@ -1,7 +1,7 @@
 import { object, string } from 'yup';
 
 export const interestSchema = object({
-  id: string(),
+  id: string().nullable(),
   leadId: string().required(),
   message: string().required(),
 });
