@@ -143,8 +143,22 @@ npx run deploy:function -- -f <functionName>
 npx run deploy:function -- --help
 ```
 
+## Testing
+
+Application services are covered by unit tests with [jest](https://jestjs.io/).
+Run tests with npm scripts:
+
+```bash
+npm run test
+```
+
+or
+
+```bash
+npm t
+```
+
 ## Future steps
 
 - Swagger
-- Unit and e2e tests
 - Authorization
